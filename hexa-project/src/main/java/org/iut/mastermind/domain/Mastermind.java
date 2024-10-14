@@ -40,7 +40,7 @@ public class Mastermind {
     // sinon on retourne le resultat du mot proposé
     public ResultatPartie evaluation(Joueur joueur, String motPropose) {
         if (isJeuEnCours(partieRepository.getPartieEnregistree(joueur))) {
-            ResultatPartie res = calculeResultat(partieRepository.getPartieEnregistree(joueur).orElse(null), motPropose);
+            ResultatPartie res = calculeResultat(Objects.requireNonNull(partieRepository.getPartieEnregistree(joueur).orElse(null)), motPropose);
             return res;
         } else {
             return ResultatPartie.ERROR;
@@ -59,6 +59,6 @@ public class Mastermind {
     // si la partie en cours est vide, on renvoie false
     // sinon, on évalue si la partie est terminée
     private boolean isJeuEnCours(Optional<Partie> partieEnCours) {
-        return partieEnCours.isPresent();
+        return partieEnCours.filter(partie -> !partie.isTerminee()).isPresent();
     }
 }

@@ -9,10 +9,13 @@ import static java.util.Collections.unmodifiableList;
 public class Reponse {
     private final String motSecret;
     private final List<Lettre> resultat = new ArrayList<>();
-    private int position;
+    private ArrayList<Character> motSecretLettres = new ArrayList<Character>();
 
     public Reponse(String mot) {
         this.motSecret = mot;
+        for (char c : motSecret.toCharArray()) {
+            motSecretLettres.add(c);
+        }
     }
 
     // on récupère la lettre à la position dans le résultat
@@ -23,10 +26,8 @@ public class Reponse {
     // on construit le résultat en analysant chaque lettre
     // du mot proposé
     public void compare(String essai) {
-        position = 0;
         for (char c : essai.toCharArray()) {
             resultat.add(evaluationCaractere(c));
-            position++;
         }
     }
 
@@ -73,6 +74,8 @@ public class Reponse {
 
     // le caractère est placé dans le mot secret
     private boolean estPlace(char carCourant) {
-        return carCourant == motSecret.charAt(position);
+        boolean estPlacee = carCourant == motSecretLettres.getFirst();
+        motSecretLettres.removeFirst();
+        return estPlacee;
     }
 }
